@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+
+namespace Main
+{
+    class MainClass
+    {
+        private static Mutex mutex = new Mutex();
+        private const int numhits = 1;
+        private const int numThreads = 4;
+
+        private static void ThreadProcess()
+        {
+            List<string> my_string_a = new List<string>();
+            List<string> my_string_b = new List<string>()
+            {
+                "Libert",
+                "Madison"
+            };
+
+            foreach (var i in my_string_b)
+                Console.WriteLine(i);
+        }
+
+        private static void UseCsharpCorner()
+        {
+            mutex.WaitOne();
+            Console.WriteLine("{0} has entered in the C_sharpcorner.com", Thread.CurrentThread.Name);
+            Thread.Sleep(500);
+            Console.WriteLine("{0} is leaving in the C_sharpcorner.com", Thread.CurrentThread.Name);
+            mutex.ReleaseMutex();
+        }
+
+        public static void Main(string[] arrgs)
+        {
+            for (int i = 0; i < numThreads; i++)
+            {
+                Thread mycorner = new Thread(new ThreadStart(ThreadProcess));
+                mycorner.Name = String.Format("Thread{0}", i + 1);
+                mycorner.Start();
+            }
+            Console.Read();
+        }
+    }
+    public class Node
+    {
+        public Node Next;
+        public dynamic Data;
+
+        public Node(dynamic data, Node next)
+        {
+            Data = data;
+            Next = next;
+        }
+
+    }
+
+     public static class Extensions
+    {
+        public static Node AddInFront(this Node my_node, dynamic value)
+        {
+            Node new_node = new Node(value, my_node);
+            return new_node;
+        }
+        public static Node AddToEnd(this Node my_node, dynamic value)
+        {
+            Node current = my_node;
+            while (current.Next != null)
+                current = current.Next;
+            current.Next = new Node(value, null);
+            return current;
+        }
+    }   
+}
