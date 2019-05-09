@@ -37,13 +37,13 @@ namespace Main
             //Console.WriteLine($"{my_linklist.IsCircular()}");
             //my_linklist.PintMyNodes();
 
-            ListNode[] input = {
-                new ListNode(1){next = new ListNode(4){next = new ListNode(5)}},
-                new ListNode(1){next = new ListNode(3){next = new ListNode(4)}},
-                new ListNode(2){next = new ListNode(6)}
+            Node[] input = {
+                new Node(1){Next = new Node(4){Next = new Node(5)}},
+                new Node(1){Next = new Node(3){Next = new Node(4)}},
+                new Node(2){Next = new Node(6)}
                 };
 
-            ListNode mergerKList = MergeKLists(input);
+            Node mergerKList = MergeKLists(input);
 
 
 
@@ -203,42 +203,37 @@ namespace Main
             head.Next = mynode;
         }
 
-        public static ListNode MergeKLists(ListNode[] lists)
+        public static Node MergeKLists(Node[] lists)
         {
-            ListNode my_node = lists[0];
-            foreach (ListNode node in lists.Skip(1))
+            Node my_node = lists[0];
+            foreach (Node node in lists.Skip(1))
             {
                 if (my_node == null)
                 {
-                    my_node.val = node.val;
+                    my_node.Data = node.Data;
                     continue;
                 }
                 else
                 {
-                    ListNode current = node;
-                    while (current.next != null)
+                    Node current = node;
+                    while (current.Next != null)
                     {
-                        if (current.val > node.val)
+                        if (int.Parse(current.Data.ToString()) >= int.Parse(node.Data.ToString()))
                         {
-                            ListNode new_node = new ListNode(node.val);
-                            new_node.next = current;
+                            Node new_node = new Node(node.Data);
+                            new_node.Next = current;
                             current = new_node;
+                            break;
                         }
-                        current = current.next;
+                        current = current.Next;
                     }
                     my_node = current;
                 }
+                my_node.PintMyNodes();
             }
             return my_node;
             #endregion
             #endregion
         }
-    }
-
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int x) { val = x; }
     }
 }
